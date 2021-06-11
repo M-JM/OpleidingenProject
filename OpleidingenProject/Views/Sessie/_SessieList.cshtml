@@ -1,0 +1,93 @@
+﻿@model IEnumerable<Sessie>
+@inject SignInManager<CustomUser> signInManager;
+@inject UserManager<CustomUser> UserManager;
+@inject IAuthorizationService AuthorizationService
+
+<link href="~/css/IndexOpleiding.css" rel="stylesheet" />
+
+
+
+<div class="col-md-12">
+
+    @if (Model == null || !Model.Any())
+    {
+
+        <div class="mb-2">
+            <h3>Er zijn nog geen sessies aangemaakt</h3>
+        </div>
+
+        <div><a asp-action="Create" asp-controller="Sessie"> Voeg een eerste sessie hier aan! </a></div>
+
+    }
+    else
+    {
+
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Leer vorm</th>
+                    <th scope="col">Start datum</th>
+                    <th scope="col">Eind datum</th>
+                    <th scope="col">Prijs</th>
+                    <th scope="col"># beschikbaar plaatsen</th>
+                    <th scope="col">max # plaatsen</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+
+
+
+                @foreach (Sessie sessie in Model)
+                {
+                    <tr>
+                        <td>@sessie.TypeLeerVorm</td>
+                        <td>@sessie.StartDatum.ToString("dd MMM yyyy")</td>
+                        <td>@sessie.EindDatum.ToString("dd MMM yyyy")</td>
+                        <td>@sessie.Prijs.ToString("C2", CultureInfo.CreateSpecificCulture("nl-NL"))</td>
+                        <td>@sessie.NogBeschikbarePlaatsen()</td>
+                        <td>@sessie.AantalPlaatsen</td>
+                        <td>
+                            @if (signInManager.IsSignedIn(User) && (await AuthorizationService.AuthorizeAsync(User, "IsUser")).Succeeded)
+                            {
+                                if (sessie.NogBeschikbarePlaatsen() != 0 && !sessie.Inschrijvingen.Any(x => x.CustomUserId == UserManager.GetUserId(User)))
+                                {
+                                    <form asp-controller="Inschrijving" asp-action="Inschrijving" asp-route-sessieId="@sessie.Id" class="btn btn-xs fs-10 pl-0 pr-0">
+                                        <button class="btn btn-xs fs-10 btn-bold btn-info">Inschrijven</button>
+                                    </form>
+                                }
+                                else if (sessie.Inschrijvingen.Any(x => x.CustomUserId == UserManager.GetUserId(User)))
+                                {
+                                    <p>al ingeschreven</p>
+                                }
+                                else
+                                {
+                                    <p>geen plaats meer</p>
+                                }
+                            }
+                            else if (signInManager.IsSignedIn(User) && (await AuthorizationService.AuthorizeAsync(User, "IsAdmin")).Succeeded)
+                            {
+                                <a class="btn btn-xs fs-10 btn-bold btn-info " asp-controller="Sessie" asp-action="Details" asp-route-id="@sessie.Id">Details</a>
+                                <a class="btn btn-xs fs-10 btn-bold btn-primary" asp-controller="Sessie" asp-action="Edit" asp-route-id="@sessie.Id">Edit</a>
+
+                                <form asp-controller="Sessie" asp-action="Delete" asp-route-id="@sessie.Id" class="btn btn-xs fs-10 pl-0 pr-0">
+                                    <button class="btn btn-xs fs-10 btn-bold btn-danger">Delete</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <p>u moet uw inloggen</p>
+                            }
+
+
+                        </td>
+                    </tr>
+
+
+                }
+
+            </tbody>
+        </table>
+    }
+</div>

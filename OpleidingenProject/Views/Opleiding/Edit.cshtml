@@ -1,0 +1,75 @@
+﻿@model UpdateOpleidingCommand
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<link href="~/lib/Trumbowyg/ui/trumbowyg.css" rel="stylesheet" />
+
+<h1>Update opleiding</h1>
+
+<h4>Update hier opleiding : @Model.Naam</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form method="post">
+            <input type="hidden" asp-for="IsDeleted" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Naam" class="control-label"></label>
+                <input asp-for="Naam" class="form-control" />
+                <span asp-validation-for="Naam" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Beschrijving" class="control-label"></label>
+                <textarea asp-for="Beschrijving" class="form-control" id="TextEditor"> </textarea>
+                <span asp-validation-for="Beschrijving" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Niveau" class="control-label"></label>
+                <select asp-for="Niveau" asp-items="Html.GetEnumSelectList<NiveauOpleiding>()" class="form-control"></select>
+                <span asp-validation-for="Niveau" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Taal" class="control-label"></label>
+                <select asp-for="Taal" asp-items="Html.GetEnumSelectList<Talen>()" class="form-control"></select>
+                <span asp-validation-for="Taal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AantalUren" class="control-label"></label>
+                <input asp-for="AantalUren" class="form-control" />
+                <span asp-validation-for="AantalUren" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="GekozenCategoryId" class="control-label"></label>
+                <select asp-for="GekozenCategoryId" asp-items="@(new SelectList(Model.Categorieen, nameof(Categorie.Id), nameof(Categorie.Naam)))" class="form-control"></select>
+                <span asp-validation-for="GekozenCategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="~/lib/Trumbowyg/trumbowyg.min.js"></script>
+    <script>
+        $('#TextEditor').trumbowyg({
+            btns: [
+                ['viewHTML'],
+                ['formatting'],
+                ['strong', 'em', 'del'],
+                ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+                ['unorderedList', 'orderedList'],
+                ['horizontalRule'],
+                ['removeformat'],
+                ['fullscreen']
+            ]
+        });</script>
+
+}

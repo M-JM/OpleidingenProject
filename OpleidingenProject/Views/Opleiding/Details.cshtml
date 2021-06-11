@@ -1,0 +1,62 @@
+﻿
+@model Opleiding
+
+@{
+    ViewData["Title"] = "Details";
+}
+<link href="~/css/IndexOpleiding.css" rel="stylesheet" />
+
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Opleidings details</h1>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+
+        <div class="card b-1 hover-shadow mb-20">
+            <div class="media card-body">
+                <div class="media-body">
+                    <div class="mb-2">
+                        <span class="fs-20 pr-16">@Model.Naam</span>
+                    </div>
+                    <small class="fs-16 fw-300 ls-1">Categorie : @Model.Categorie.Naam</small>
+                </div>
+                <div class="media-right text-right d-none d-md-block">
+                    <p class="text-fade mb-12">Niveau : @Model.Niveau</p>
+                    <p class="text-fade mb-12">Taal :  @Model.Taal</p>
+                    <p class="text-fade mb-12">Duur :  @Model.AantalUren uren</p>
+                </div>
+            </div>
+            <footer class="card-footer flexbox align-items-center">
+                <div>
+                    <strong>beschrijving: </strong>
+                    <br>
+                    <span>@Html.Raw(Model.Beschrijving).</span>
+                </div>
+
+            </footer>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <h3>Beschikbare sessies</h3>
+            </div>
+
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                @await Html.PartialAsync("~/Views/Sessie/_SessieList.cshtml", Model.Sessies)
+            </div>
+
+        </div>
+
+    
+
+
+
+    </div>
+</div>

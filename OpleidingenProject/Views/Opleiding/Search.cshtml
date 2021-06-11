@@ -1,0 +1,48 @@
+﻿@model OverviewWithSearchViewmodel
+@{
+    ViewData["Title"] = "Opleidingen Zoeken";
+}
+<link href="~/css/IndexOpleiding.css" rel="stylesheet" />
+
+
+<form asp-controller="Opleiding" asp-action="Search" method="post" class="form-inline mb-5">
+    <div class="container">
+        <div class="row">
+
+
+            <div class="form-group mr-2 ml-2">
+                <label class="control-label mr-2" >Zoek: </label>
+                <input id="searchTerm" asp-for="SearchString" class="form-control ml-1" />
+            </div>
+
+            <div class="form-group mr-2 ml-2">
+                <label class="control-label mr-2"> Categorie:</label>
+                <select asp-for="GekozenCategoryId" asp-items="@(new SelectList(Model.Categorieen, nameof(Categorie.Id), nameof(Categorie.Naam)))" class="form-control">
+                    <option value="">Kies een categorie</option>
+                </select>
+            </div>
+
+            <div class="form-group mr-2 ml-2">
+                <label class="control-label mr-2">Niveau: </label>
+                <select asp-for="GekozenNiveau" asp-items="Html.GetEnumSelectList<NiveauOpleiding>()" class="form-control">
+                    <option value="">Kies een Niveau</option>
+                </select>
+            </div>
+
+            <div class="form-group mr-2 ml-2">
+                <label class="control-label mr-2">Talen: </label>
+                <select asp-for="GekozenTaal" asp-items="Html.GetEnumSelectList<Talen>()" class="form-control">
+                    <option value="">Kies een Taal</option>
+                </select>
+                
+            </div>
+
+            <div class="form-group  mr-2 ml-2">
+                <button class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@await Html.PartialAsync("_opleidinglijst", Model.Opleidingen)

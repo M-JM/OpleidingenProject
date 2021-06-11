@@ -1,0 +1,72 @@
+﻿@model UpdateSessieCommand
+
+@{
+    ViewData["Title"] = "Update Sessie";
+}
+
+
+<h1>Update Sessie</h1>
+
+<h4>Pas hier je sessie aan</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit" asp-controller="Sessie" enctype="multipart/form-data">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="AantalPlaatsen" class="control-label"></label>
+                <input asp-for="AantalPlaatsen" class="form-control" />
+                <span asp-validation-for="AantalPlaatsen" class="text-danger"></span>
+            </div>
+
+            <div class="form-row">
+
+                <label asp-for="Prijs" class="control-label"></label>
+                <input asp-for="Prijs" class="form-control"/>
+                <span asp-validation-for="Prijs" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TypeLeerVorm" class="control-label"></label>
+                <select asp-for="TypeLeerVorm" asp-items="Html.GetEnumSelectList<LeerVorm>()" class="form-control"> </select>
+                <span asp-validation-for="TypeLeerVorm" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="StartDatum"></label>
+                <input asp-for="StartDatum" class="form-control" />
+                <span asp-validation-for="StartDatum" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EindDatum"></label>
+                <input asp-for="EindDatum" class="form-control" />
+                <span asp-validation-for="EindDatum" class="text-danger"></span>
+            </div>
+
+
+
+            <div class="form-group">
+                <label asp-for="GekozenOpleidingId" class="control-label"></label>
+                <select asp-for="GekozenOpleidingId" asp-items="@(new SelectList(Model.Opleidingen, nameof(Opleiding.Id), nameof(Opleiding.Naam)))" class="form-control"></select>
+                <span asp-validation-for="GekozenOpleidingId" class="text-danger"></span>
+            </div>
+
+
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Terug naar overzicht</a>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial.cshtml")
+
+}

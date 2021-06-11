@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Opleiding>
+@inject SignInManager<CustomUser> signInManager
+@inject UserManager<CustomUser> UserManager
+@inject IAuthorizationService AuthorizationService
+
+
+<div class="container">
+    <div class="col-md-12">
+
+        @foreach (Opleiding opleiding in Model)
+        {
+
+            <div class="card b-1 hover-shadow mb-20">
+                <div class="media card-body">
+                    <div class="media-body">
+                        <div class="mb-2">
+                            <span class="fs-20 pr-16">@opleiding.Naam</span>
+                        </div>
+                        <small class="fs-16 fw-300 ls-1">Categorie : @opleiding.Categorie.Naam</small>
+                    </div>
+                    <div class="media-right text-right d-none d-md-block">
+                        <p class="text-fade mb-12">Niveau : @opleiding.Niveau</p>
+                        <span class="text-fade">Taal :  @opleiding.Taal</span>
+                    </div>
+                </div>
+                <footer class="card-footer flexbox align-items-center">
+                    <div>
+                        <strong>Korte beschrijving: </strong>
+                        <span class="limit">@Html.Raw(opleiding.Beschrijving)</span>
+                    </div>
+                    <div class="card-hover-show">
+
+                        <a class="btn btn-xs fs-10 btn-bold btn-info " asp-controller="Opleiding" asp-action="Details" asp-route-id="@opleiding.Id">Details</a>
+                        @if (signInManager.IsSignedIn(User) && (await AuthorizationService.AuthorizeAsync(User, "IsAdmin")).Succeeded)
+                        {
+                            <a class="btn btn-xs fs-10 btn-bold btn-primary" asp-controller="Opleiding" asp-action="Edit" asp-route-id="@opleiding.Id">Edit</a>
+                            <form asp-controller="Opleiding" asp-action="Delete" asp-route-id="@opleiding.Id" class="btn btn-xs fs-10 pl-0 pr-0">
+                                <button class="btn btn-xs fs-10 btn-bold btn-danger">Delete</button>
+                            </form>
+                        }
+
+
+                    </div>
+                </footer>
+            </div>
+
+        }
+
+
+
+    </div>
+</div>

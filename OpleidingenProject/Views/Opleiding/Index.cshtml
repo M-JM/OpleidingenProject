@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Opleiding>
+@inject SignInManager<CustomUser> signInManager
+@inject UserManager<CustomUser> UserManager
+@inject IAuthorizationService AuthorizationService
+
+@{
+    ViewData["Title"] = "Opleiding Lijst";
+}
+<link href="~/css/IndexOpleiding.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>Alle Opleidingen</h1>
+    </div>
+
+</div>
+
+
+

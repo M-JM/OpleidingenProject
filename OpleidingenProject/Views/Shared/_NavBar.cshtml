@@ -1,0 +1,90 @@
+﻿@inject SignInManager<CustomUser> signInManager
+@inject IAuthorizationService AuthorizationService
+
+
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+    <div class="container">
+        <a class="navbar-brand" asp-area="" asp-controller="Opleiding" asp-action="Index">Opleiding Centra</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+            <partial name="_LoginPartial" />
+            <ul class="navbar-nav flex-grow-1">
+
+                @if ((await AuthorizationService.AuthorizeAsync(User, "IsAdmin")).Succeeded)
+                {
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Opleidingen
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" asp-action="Index" asp-controller="Opleiding">Overzicht</a>
+                        <a class="dropdown-item" asp-action="Create" asp-controller="Opleiding">Nieuw</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Sessies
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" asp-action="Overview" asp-controller="Sessie">Overzicht</a>
+                        <a class="dropdown-item" asp-action="Create" asp-controller="Sessie">Nieuw</a>
+                    </div>
+                </li>
+
+
+
+                }
+                @if ((await AuthorizationService.AuthorizeAsync(User, "IsUser")).Succeeded)
+                {
+
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Opleidingen
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" asp-action="Index" asp-controller="Opleiding">Overzicht</a>
+                            <a class="dropdown-item" asp-action="Search" asp-controller="Opleiding">Zoeken</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Mijn Inschrijvingen
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" asp-action="Overview" asp-controller="Inschrijving">Overzicht</a>
+                        </div>
+                    </li>
+
+
+                }
+                else if(!signInManager.IsSignedIn(User))
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Opleidingen
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" asp-action="Index" asp-controller="Opleiding">Overzicht</a>
+                            <a class="dropdown-item" asp-action="Search" asp-controller="Opleiding">Zoeken</a>
+                        </div>
+                    </li>
+
+                }
+
+
+            </ul>
+        </div>
+    </div>
+</nav>

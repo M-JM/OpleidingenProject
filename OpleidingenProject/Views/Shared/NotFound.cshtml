@@ -1,0 +1,48 @@
+﻿@model ErrorMessage
+
+
+@{ ViewBag.Title = "Not Found"; }
+<link href="~/css/Error.css" rel="stylesheet" asp-append-version="true" />
+
+
+
+<div class="container-lg perfect-centering">
+    <div class="row text-center">
+        <div class="col-lg-6 offset-lg-3 col-md-6 offset-md-3 col-12 p-3 error-main">
+            <div class="row w-200">
+                <div class="col-lg-10 col-12 col-sm-10 offset-sm-1 offset-sm-1">
+                    <img src="~/images/PageNotFound.png" style="height:auto;width:100%;" class="m-0" />
+
+                   
+
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                <a asp-action="AdminIndex" asp-controller="Home" class="btn btn-success m-2">Back to overview</a>}
+                    @if (User.IsInRole("User"))
+                    {
+                <a asp-action="UserIndex" asp-controller="Home" class="btn btn-success m-2">Back to overview</a>}
+                    @if (User.IsInRole("SuperAdmin"))
+                    {
+                <a asp-action="SuperAdminIndex" asp-controller="Home" class="btn btn-success m-2">Back to overview</a>}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <h4 class="m-2">@Model.TheErrorMessage</h4>
+
+        <h4 class="m-2">@Model.Path</h4>
+
+        <h4 class="m-2">@Model.Qs</h4>
+    </div>
+
+</div>
+
+
+@*Design from taken from = https://www.nicesnippets.com/snippet/bootstrap-4-page-not-found-404-error-page-design*@
+
+
+
